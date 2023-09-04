@@ -1,0 +1,126 @@
+To create a Flutter home page with a bottom navigation bar and three separate stateful widget pages, each containing a button that shows an endDrawer when tapped, you can follow these steps. We will have a main.dart file for the home page and separate files for the three pages: Page1.dart, Page2.dart, and Page3.dart.
+
+1. Create a Flutter project and set up the necessary dependencies.
+
+2. Create a file named `main.dart` for the main application:
+
+```dart
+import 'package:flutter/material.dart';
+import 'page1.dart';
+import 'page2.dart';
+import 'page3.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: HomeScreen(),
+    );
+  }
+}
+```
+
+3. Create the `HomeScreen` class in the `main.dart` file:
+
+```dart
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _currentIndex = 0;
+
+  final List<Widget> _pages = [Page1(), Page2(), Page3()];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Flutter Bottom Navigation with EndDrawer'),
+      ),
+      body: _pages[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: _onItemTapped,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Page 1',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.business),
+            label: 'Page 2',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.school),
+            label: 'Page 3',
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
+
+4. Create separate files for `Page1.dart`, `Page2.dart`, and `Page3.dart`. Here's an example for one of them (`Page1.dart`):
+
+```dart
+import 'package:flutter/material.dart';
+
+class Page1 extends StatefulWidget {
+  @override
+  _Page1State createState() => _Page1State();
+}
+
+class _Page1State extends State<Page1> {
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void _showEndDrawer() {
+    _scaffoldKey.currentState?.openEndDrawer();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      key: _scaffoldKey,
+      appBar: AppBar(
+        title: Text('Page 1'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: _showEndDrawer,
+          child: Text('Show End Drawer'),
+        ),
+      ),
+      endDrawer: Drawer(
+        child: Container(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text('End Drawer for Page 1'),
+              // Add your end drawer content here
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+```
+
+5. Repeat step 4 for `Page2.dart` and `Page3.dart`, making sure to customize each page's content and end drawer.
+
+6. Run your Flutter app, and you should have a home page with a bottom navigation bar and three pages, each containing a button to show an endDrawer.
+
+This code provides a basic structure, and you can customize each page and end drawer according to your requirements.
