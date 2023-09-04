@@ -1,0 +1,131 @@
+
+
+```dart
+import 'package:flutter/material.dart';
+
+class FirstPage extends StatefulWidget {
+  @override
+  _FirstPageState createState() => _FirstPageState();
+}
+
+class _FirstPageState extends State<FirstPage> {
+  void callMe() {
+    print('callMe function called from the first page.');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('First Page'),
+      ),
+      body: Center(
+        child: Text('First Page Content'),
+      ),
+    );
+  }
+}
+
+class SecondPage extends StatelessWidget {
+  final VoidCallback callback;
+
+  SecondPage({required this.callback});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Second Page'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            // Call the callback function from the first page when the button is tapped.
+            callback();
+          },
+          child: Text('Call callMe from First Page'),
+        ),
+      ),
+    );
+  }
+}
+```
+
+2. In your main.dart or wherever you manage your app's navigation, navigate between these pages and pass the `callMe` function as a callback to the `SecondPage`.
+
+```dart
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: FirstPage(),
+    );
+  }
+}
+
+class FirstPage extends StatefulWidget {
+  @override
+  _FirstPageState createState() => _FirstPageState();
+}
+
+class _FirstPageState extends State<FirstPage> {
+  void callMe() {
+    print('callMe function called from the first page.');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('First Page'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            // Navigate to the second page and pass the callMe function as a callback.
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SecondPage(callback: callMe),
+              ),
+            );
+          },
+          child: Text('Go to Second Page'),
+        ),
+      ),
+    );
+  }
+}
+
+class SecondPage extends StatelessWidget {
+  final VoidCallback callback;
+
+  SecondPage({required this.callback});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Second Page'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            // Call the callback function from the first page when the button is tapped.
+            callback();
+          },
+          child: Text('Call callMe from First Page'),
+        ),
+      ),
+    );
+  }
+}
+```
+
+Now, when you tap the button on the second page, it will call the `callMe` function from the first page and print the statement.
